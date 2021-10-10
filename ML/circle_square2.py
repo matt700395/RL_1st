@@ -1,4 +1,3 @@
-
 import turtle
 import random
 import matplotlib.pyplot as plt
@@ -69,22 +68,22 @@ for i in range(5):
 
         # Append the values of PI in list :
         pi_values.append(pi)
-        out_of_pi_values.append(out_of_pi)
+        out_of_pi_values.append(100*100*out_of_pi)
 
         # Calculating the errors :
         #avg_pi_errors = [abs(math.pi - pi) for pi in pi_values]
-        avg_out_of_pi_errors = [abs((4-math.pi) - out_of_pi) for out_of_pi in out_of_pi_values]
+        avg_out_of_pi_errors = [abs(100*100*(4-math.pi - out_of_pi)) for out_of_pi in out_of_pi_values]
 
     # Print the final value of PI for each iterations :
     #print(pi_values[-1])
     #print(pi_values)
     print(out_of_pi_values[-1])
 
-print(f'final value : {out_of_pi_values[-1]} ')
-
+print(f'final value : {out_of_pi_values[-1]}')
+print(f'{len(out_of_pi_values)}')
 
 # Plot the PI values :
-plt.axhline(y=(4-math.pi), color='g', linestyle='-')
+plt.axhline(y=100*100*(4-math.pi), color='g', linestyle='-')
 plt.plot(out_of_pi_values)
 plt.xlabel("Iterations")
 plt.ylabel("Out of PI Value")
