@@ -42,6 +42,7 @@ from matplotlib import pyplot
 #problem 3
 print('problem3')
 pyplot.plot(h.history['accuracy'])
+pyplot.show()
 
 #Evaluation
 #Problem 4
