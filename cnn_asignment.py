@@ -22,13 +22,13 @@ from tensorflow.keras.models import Sequential
 
 #model define
 model = Sequential()
-model.add(Dense(4, activation='relu', input_shape=(train_data.shape[1],)))
-model.add(Dense(5, activation='ReLu'))
-model.add(Dense(5, activation='ReLu'))
+model.add(Dense(4, input_shape=(4, ), activation='relu'))
+model.add(Dense(5, activation='relu'))
+model.add(Dense(5, activation='relu'))
+model.add(Dense(3, activation='softmax'))
 
-model.compile(optimizer='adam',loss='categorical_entropy' , matrics=['accuracy'])
-
-model.fit()
+model.compile(optimizer='Adam', loss='categorical_crossentropy' , metrics=['accuracy'])
+model.summary()
 
 #neural network model training
 h = model.fit(X_train, Y_train, epochs = 50)
@@ -40,13 +40,16 @@ print('accuracy : %1.2f'%score[1])
 from matplotlib import pyplot
 
 #problem 3
+print('problem3')
 pyplot.plot(h.history['accuracy'])
 
 #Evaluation
 #Problem 4
+print('problem4')
 print(Y_test[0:5, ])
 print(np.argmax(Y_test[0:5,], axis=-1))
 
 #problem 5
+print('problem5')
 print(model.predict(X_test[0:5, ]))
 print(model.predict_classes((X_test[0:5, ])))
