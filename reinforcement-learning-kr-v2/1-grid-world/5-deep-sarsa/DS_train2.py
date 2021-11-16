@@ -36,33 +36,33 @@ class DeepSARSAgent:
         # 타깃 모델 초기화
         self.update_target_model()
 
-'''
-    # DQN code
+    '''
+        # DQN code
+        def build_model(self):
+            model = Sequential()
+            model.add(Dense(24, input_dim=self.state_size, activation='relu',
+                            kernel_initializer='he_uniform'))
+            model.add(Dense(24, activation='relu',
+                            kernel_initializer='he_uniform'))
+            model.add(Dense(self.action_size, activation='linear',
+                            kernel_initializer='he_uniform'))
+            model.summary()
+            model.compile(loss='mse', optimizer=Adam(lr=self.learning_rate))
+            return model
+    '''
+
+
+    # 상태가 입력, 큐함수가 출력인 인공신경망 생성
     def build_model(self):
         model = Sequential()
-        model.add(Dense(24, input_dim=self.state_size, activation='relu',
-                        kernel_initializer='he_uniform'))
-        model.add(Dense(24, activation='relu',
-                        kernel_initializer='he_uniform'))
-        model.add(Dense(self.action_size, activation='linear',
-                        kernel_initializer='he_uniform'))
+        model.add(Dense(30, input_dim=state_size, activation='relu'))
+        model.add(Dense(30, activation='relu'))
+        model.add(Dense(action_size, activation='linear'))
+        model.summary()
+        model.compile(loss='mse', optimizer=Adam(lr=self.learning_rate))
         model.summary()
         model.compile(loss='mse', optimizer=Adam(lr=self.learning_rate))
         return model
-'''
-
-
-# 상태가 입력, 큐함수가 출력인 인공신경망 생성
-def build_model(self):
-    model = Sequential()
-    self.add(Dense(30, input_dim=state_size, activation='relu'))
-    self.add(Dense(30, activation='relu'))
-    self.add(Dense(action_size, activation='linear'))
-    self.summary()
-    self.compile(loss='mse', optimizer=Adam(lr=self.learning_rate))
-    model.summary()
-    model.compile(loss='mse', optimizer=Adam(lr=self.learning_rate))
-    return model
 
     # 타깃 모델을 모델의 가중치로 업데이트
     def update_target_model(self):
