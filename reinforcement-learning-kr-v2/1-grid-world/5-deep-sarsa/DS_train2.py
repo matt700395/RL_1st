@@ -36,7 +36,8 @@ class DeepSARSAgent:
         # 타깃 모델 초기화
         self.update_target_model()
 
-    # 상태가 입력, 큐함수가 출력인 인공신경망 생성
+'''
+    # DQN code
     def build_model(self):
         model = Sequential()
         model.add(Dense(24, input_dim=self.state_size, activation='relu',
@@ -48,6 +49,20 @@ class DeepSARSAgent:
         model.summary()
         model.compile(loss='mse', optimizer=Adam(lr=self.learning_rate))
         return model
+'''
+
+
+# 상태가 입력, 큐함수가 출력인 인공신경망 생성
+def build_model(self):
+    model = Sequential()
+    self.add(Dense(30, input_dim=state_size, activation='relu'))
+    self.add(Dense(30, activation='relu'))
+    self.add(Dense(action_size, activation='linear'))
+    self.summary()
+    self.compile(loss='mse', optimizer=Adam(lr=self.learning_rate))
+    model.summary()
+    model.compile(loss='mse', optimizer=Adam(lr=self.learning_rate))
+    return model
 
     # 타깃 모델을 모델의 가중치로 업데이트
     def update_target_model(self):
