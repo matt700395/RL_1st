@@ -9,16 +9,6 @@ from tensorflow.keras.layers import Dense
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.models import Sequential
 
-class DeepSARSA(Sequential):
-    def __init__(self, state_size, action_size, learning_rate):
-        super().__init__()
-        self.add(Dense(30, input_dim=state_size, activation='relu'))
-        self.add(Dense(30, activation='relu'))
-        self.add(Dense(action_size, activation='linear'))
-        self.summary()
-        self.compile(loss='mse', optimizer=Adam(lr=learning_rate))
-
-
 class DeepSARSAgent:
     def __init__(self, state_size, action_size):
 
@@ -27,7 +17,7 @@ class DeepSARSAgent:
 
 
         self.discount_factor = 0.99
-        self.lr = 0.001
+        self.learning_rate = 0.001
         self.epsilon = 1.0
         self.epsilon_decay = .999
         self.epsilon_min = 0.01
@@ -46,6 +36,22 @@ class DeepSARSAgent:
         # 타깃 모델 초기화
         self.update_target_model()
 
+    # 상태가 입력, 큐함수가 출력인 인공신경망 생성
+    def build_model(self):
+        model = Sequential()
+        model.add(Dense(24, input_dim=self.state_size, activation='relu',
+                        kernel_initializer='he_uniform'))
+        model.add(Dense(24, activation='relu',
+                        kernel_initializer='he_uniform'))
+        model.add(Dense(self.action_size, activation='linear',
+                        kernel_initializer='he_uniform'))
+        model.summary()
+        model.compile(loss='mse', optimizer=Adam(lr=self.learning_rate))
+        return model
+
+    # 타깃 모델을 모델의 가중치로 업데이트
+    def update_target_model(self):
+        self.target_model.set_weights(self.model.get_weights())
 
     def get_action(self, state):
         if np.random.rand() <= self.epsilon:
