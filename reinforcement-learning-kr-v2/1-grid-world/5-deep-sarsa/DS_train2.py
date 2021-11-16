@@ -1,3 +1,4 @@
+import sys
 from collections import deque
 
 import pylab
@@ -11,7 +12,7 @@ from tensorflow.keras.models import Sequential
 
 class DeepSARSAgent:
     def __init__(self, state_size, action_size):
-
+        self.render = False
         self.state_size = state_size
         self.action_size = action_size
 
@@ -78,25 +79,66 @@ class DeepSARSAgent:
             q_values = self.model.predict(state)
             return np.argmax(q_values[0])
 
+    # 샘플 <s, a, r, s'>을 리플레이 메모리에 저장
+    def append_sample(self, state, action, reward, next_state, done):
+        self.memory.append((state, action, reward, next_state, done))
 
-    def train_model(self, state, action, reward, next_state, next_action, done):
+    '''
+        def train_model(self, state, action, reward, next_state, next_action, done):
+            if self.epsilon > self.epsilon_min:
+                self.epsilon *= self.epsilon_decay
+    
+    
+            target_Q = self.model.predict(state)[0]
+            next_Q = self.model.predict(next_state)[0][next_action]
+    
+    
+            if done:
+                target_Q[action] = reward
+            else:
+                target_Q[action] = (reward + self.discount_factor * next_Q )
+    
+    
+            target_Q = np.reshape(target_Q, [1, self.action_size])
+    
+            self.model.fit(state, target_Q, epochs=1, verbose=0)
+    '''
+
+
+    # 리플레이 메모리에서 무작위로 추출한 배치로 모델 학습
+    def train_model(self):
         if self.epsilon > self.epsilon_min:
             self.epsilon *= self.epsilon_decay
 
+        # 메모리에서 배치 크기만큼 무작위로 샘플 추출
+        mini_batch = random.sample(self.memory, self.batch_size)
 
-        target_Q = self.model.predict(state)[0]
-        next_Q = self.model.predict(next_state)[0][next_action]
+        states = np.zeros((self.batch_size, self.state_size))
+        next_states = np.zeros((self.batch_size, self.state_size))
+        actions, rewards, dones = [], [], []
 
+        for i in range(self.batch_size):
+            states[i] = mini_batch[i][0]
+            actions.append(mini_batch[i][1])
+            rewards.append(mini_batch[i][2])
+            next_states[i] = mini_batch[i][3]
+            dones.append(mini_batch[i][4])
 
-        if done:
-            target_Q[action] = reward
-        else:
-            target_Q[action] = (reward + self.discount_factor * next_Q )
+        # 현재 상태에 대한 모델의 큐함수
+        # 다음 상태에 대한 타깃 모델의 큐함수
+        target = self.model.predict(states)
+        target_val = self.target_model.predict(next_states)
 
+        # 벨만 최적 방정식을 이용한 업데이트 타깃
+        for i in range(self.batch_size):
+            if dones[i]:
+                target[i][actions[i]] = rewards[i]
+            else:
+                target[i][actions[i]] = rewards[i] + self.discount_factor * (
+                    np.amax(target_val[i]))
 
-        target_Q = np.reshape(target_Q, [1, self.action_size])
-
-        self.model.fit(state, target_Q, epochs=1, verbose=0)
+        self.model.fit(states, target, batch_size=self.batch_size,
+                       epochs=1, verbose=0)
 
 
 if __name__ == "__main__":
@@ -118,16 +160,30 @@ if __name__ == "__main__":
         time = 0
 
         while not done:
+            #add
+            if agent.render:
+                env.render()
 
             action = agent.get_action(state)
 
 
-            next_state, reward, done = env.step(action)
+            #next_state, reward, done, info = env.step(action)
+            next_state, reward, done  = env.step(action)
+
             next_state = np.reshape(next_state, [1, state_size])
-            next_action = agent.get_action(next_state)
+            #next_action = agent.get_action(next_state)
+            # add 에피소드가 중간에 끝나면 -100 보상
+            reward = reward if not done or score == 499 else -100
 
 
-            agent.train_model(state, action, reward, next_state, next_action, done)
+            #agent.train_model(state, action, reward, next_state, next_action, done)
+            #code add
+            # 리플레이 메모리에 샘플 <s, a, r, s'> 저장
+            agent.append_sample(state, action, reward, next_state, done)
+            # 매 타임스텝마다 학습
+            if len(agent.memory) >= agent.train_start:
+                agent.train_model()
+
             score += reward
             state = next_state
             time += 1
@@ -135,12 +191,26 @@ if __name__ == "__main__":
                 done = True
 
             if done:
+                # 각 에피소드마다 타깃 모델을 모델의 가중치로 업데이트
+                agent.update_target_model()
 
+                score = score if score == 500 else score + 100
+                # 에피소드마다 학습 결과 출력
+                scores.append(score)
+                episodes.append(episode)
+                print("episode:", episode, "  score:", score, "  memory length:",
+                      len(agent.memory), "  epsilon:", agent.epsilon)
+                '''
                 print("episode: {:3d} | score: {:3d} | epsilon: {:.3f}".format(
                       episode, score, agent.epsilon))
                 scores.append(score)
                 episodes.append(episode)
+                '''
 
+            # add 이전 10개 에피소드의 점수 평균이 490보다 크면 학습 중단
+            if np.mean(scores[-min(10, len(scores)):]) > 490:
+                agent.model.save_weights("./cartpole_dqn.h5")
+                sys.exit()
 
         if episode % 100 == 0:
             agent.model.save_weights('save_model/model', save_format='tf')
@@ -149,5 +219,5 @@ if __name__ == "__main__":
             pylab.ylabel("score")
             pylab.savefig("./save_graph/graph.png")
 
-    agent.model.save_weights('save_model/model', save_format='tf')
+    #agent.model.save_weights('save_model/model', save_format='tf')
 

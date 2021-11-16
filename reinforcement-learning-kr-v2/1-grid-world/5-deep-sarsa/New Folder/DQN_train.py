@@ -122,6 +122,7 @@ if __name__ == "__main__":
         # env 초기화
         state = env.reset()
         state = np.reshape(state, [1, state_size])
+        time = 0
 
         while not done:
             if agent.render:
@@ -144,9 +145,10 @@ if __name__ == "__main__":
             score += reward
             state = next_state
 
+
             if done:
                 # 각 에피소드마다 타깃 모델을 모델의 가중치로 업데이트
-                #agent.update_target_model()
+                agent.update_target_model()
 
                 score = score if score == 500 else score + 100
                 # 에피소드마다 학습 결과 출력

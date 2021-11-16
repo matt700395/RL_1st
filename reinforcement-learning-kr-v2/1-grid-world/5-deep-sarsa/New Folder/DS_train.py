@@ -79,7 +79,6 @@ if __name__ == "__main__":
 
         state = env.reset()
         state = np.reshape(state, [1, state_size])
-        time = 0
 
         while not done:
 
