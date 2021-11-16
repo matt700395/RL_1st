@@ -2,6 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/deep_sarsa" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/reinforcement-learning-kr" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/reinforcement-learning-kr-v2" vcs="Git" />
   </component>
