@@ -136,10 +136,11 @@ if __name__ == "__main__":
             next_state, reward, done, position = env.step(action)
             next_state = np.reshape(next_state, [1, state_size])
             # 에피소드가 중간에 끝나면 -100 보상
-            reward = reward if not done or score == 499 else -100
-            #reward = reward if not done or score == 9 else -1
+            #reward = reward if not done or score == 499 else -100
+            if state[0]>=0.5:
+                reward += 10
 
-            print(f'no edit reward : {reward}')
+            #print(f'no edit reward : {reward}')
             # 리플레이 메모리에 샘플 <s, a, r, s'> 저장
             agent.append_sample(state, action, reward, next_state, done)
             # 매 타임스텝마다 학습
@@ -164,7 +165,7 @@ if __name__ == "__main__":
 
                 # 이전 10개 에피소드의 점수 평균이 490보다 크면 학습 중단
                 if np.mean(scores[-min(10, len(scores)):]) > 490:
-                    agent.model.save_weights("./mountain_car.h5")
+                    agent.model.save_weights("./mountain_car_2.h5")
                     sys.exit()
 
                 '''
