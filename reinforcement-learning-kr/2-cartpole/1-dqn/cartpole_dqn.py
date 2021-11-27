@@ -162,5 +162,5 @@ if __name__ == "__main__":
 
                 # 이전 10개 에피소드의 점수 평균이 490보다 크면 학습 중단
                 if np.mean(scores[-min(10, len(scores)):]) > 490:
-                    agent.model.save_weights("./save_model/cartpole_dqn.h5")
+                    agent.model.save_weights("./save_model/mountain_car.h5")
                     sys.exit()

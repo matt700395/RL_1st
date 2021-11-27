@@ -7,6 +7,7 @@ from collections import deque
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.models import Sequential
+from pyvirtualdisplay import Display
 
 
 # 카트폴 예제에서의 DQN 에이전트
@@ -137,7 +138,6 @@ if __name__ == "__main__":
             next_state = np.reshape(next_state, [1, state_size])
             # 에피소드가 중간에 끝나면 -100 보상
             reward = reward if not done or score == 499 else -100
-            #reward = reward if not done or score == 9 else -1
 
             print(f'no edit reward : {reward}')
             # 리플레이 메모리에 샘플 <s, a, r, s'> 저장
@@ -150,6 +150,8 @@ if __name__ == "__main__":
             state = next_state
             #print(f'score : {score}, reward : {reward}')
             if done:
+                
+
                 reward += 10
 
                 # 각 에피소드마다 타깃 모델을 모델의 가중치로 업데이트
@@ -174,7 +176,6 @@ if __name__ == "__main__":
                     agent.model.save_weights("./mountain_car.h5")
                     sys.exit()
                 '''
-
 
         if e % 100 == 0:
             agent.model.save_weights("./mountain_car.h5")

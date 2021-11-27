@@ -1,0 +1,10 @@
+2021-11-21 14:30:50.308466: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX AVX2 FMA
+2021-11-21 14:30:50.394563: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2200080000 Hz
+2021-11-21 14:30:50.405506: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x55fbb0bb7000 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2021-11-21 14:30:50.405591: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+2021-11-21 14:30:50.405884: I tensorflow/core/common_runtime/process_util.cc:147] Creating new thread pool with default inter op setting: 2. Tune using inter_op_parallelism_threads for best performance.
+WARNING:tensorflow:Method (on_train_batch_end) is slow compared to the batch update (0.110893). Check your callbacks.
+WARNING:tensorflow:Method (on_train_batch_end) is slow compared to the batch update (0.192489). Check your callbacks.
+WARNING:tensorflow:Method (on_train_batch_end) is slow compared to the batch update (0.296117). Check your callbacks.
+WARNING:tensorflow:Method (on_train_batch_end) is slow compared to the batch update (0.189341). Check your callbacks.
+WARNING:tensorflow:Method (on_train_batch_end) is slow compared to the batch update (0.199565). Check your callbacks.

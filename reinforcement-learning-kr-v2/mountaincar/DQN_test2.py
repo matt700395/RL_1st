@@ -29,9 +29,9 @@ class DQNAgent:
     # 상태가 입력, 큐함수가 출력인 인공신경망 생성
     def build_model(self):
         model = Sequential()
-        model.add(Dense(24, input_dim=self.state_size, activation='relu',
+        model.add(Dense(30, input_dim=self.state_size, activation='relu',
                         kernel_initializer='he_uniform'))
-        model.add(Dense(24, activation='relu',
+        model.add(Dense(30, activation='relu',
                         kernel_initializer='he_uniform'))
         model.add(Dense(self.action_size, activation='linear',
                         kernel_initializer='he_uniform'))
@@ -51,7 +51,7 @@ if __name__ == "__main__":
     EPISODES = 1
 
     # CartPole-v1 환경, 최대 타임스텝 수가 500
-    env = gym.make('CartPole-v1')
+    env = gym.make('MountainCar-v0')
     d = Display()
     d.start()
 

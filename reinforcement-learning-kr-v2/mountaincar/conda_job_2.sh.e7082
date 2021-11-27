@@ -1,0 +1,9 @@
+2021-11-21 15:53:50.802796: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX AVX2 FMA
+2021-11-21 15:53:50.904431: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2200080000 Hz
+2021-11-21 15:53:50.907049: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x55d692d74000 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2021-11-21 15:53:50.907126: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+2021-11-21 15:53:50.907310: I tensorflow/core/common_runtime/process_util.cc:147] Creating new thread pool with default inter op setting: 2. Tune using inter_op_parallelism_threads for best performance.
+Traceback (most recent call last):
+  File "DQN_train_2.py", line 140, in <module>
+    if state[0]>=0.5:
+ValueError: The truth value of an array with more than one element is ambiguous. Use a.any() or a.all()

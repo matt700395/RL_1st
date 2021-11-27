@@ -133,12 +133,10 @@ if __name__ == "__main__":
             # 현재 상태로 행동을 선택
             action = agent.get_action(state)
             # 선택한 행동으로 환경에서 한 타임스텝 진행
-            next_state, reward, done, position = env.step(action)
+            next_state, reward, done, info = env.step(action)
             next_state = np.reshape(next_state, [1, state_size])
-            # 에피소드가 중간에 끝나면 -100 보상
-            #reward = reward if not done or score == 499 else -100
-            if state[0]>=0.5:
-                reward += 10
+            # 에피소드가 중간에 끝나면 -10 보상
+            reward = reward if not done or score == 499 else -10
 
             #print(f'no edit reward : {reward}')
             # 리플레이 메모리에 샘플 <s, a, r, s'> 저장
@@ -149,7 +147,10 @@ if __name__ == "__main__":
 
             score += reward
             state = next_state
-            #print(f'score : {score}, reward : {reward}')
+
+            if state[0][0]>=0.5:
+                reward += 10
+
             if done:
                 reward += 10
 

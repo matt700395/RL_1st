@@ -23,7 +23,7 @@ class DQNAgent:
 
         # 모델과 타깃 모델 생성
         self.model = self.build_model()
-        self.model.load_weights("./cartpole_dqn.h5")
+        self.model.load_weights("./mountain_car.h5")
 
 
     # 상태가 입력, 큐함수가 출력인 인공신경망 생성
